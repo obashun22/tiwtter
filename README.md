@@ -1,3 +1,26 @@
+# Tiwtter
+
+## 開発環境
+node: v14.16.0
+yarn: 1.22.10
+create-react-app: 4.0.3
+
+<!-- 
+# タイポ一覧
+どういｓてる 
+はじめｒ
+たこきや
+ばーてんだ＾
+文末削除され
+
+# アルゴリズム
+漢字はスルーでリスト分割
+各リストに対して変換を行う
+
+
+-->
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
