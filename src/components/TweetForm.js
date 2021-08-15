@@ -31,7 +31,7 @@ const TweetForm = ({
           />
         </CardContent>
       </Box>
-      <Box p={1} style={{textAlign: "right"}}>
+      <Box pb={1} style={{textAlign: "right"}}>
         <Fab
           variant="extended"
           color="primary"
