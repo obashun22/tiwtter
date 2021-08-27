@@ -19,90 +19,33 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import TweetForm from './components/TweetForm';
 import RecentTweet from './components/RecentTweet';
-import LoginButton from './components/LoginButton';
 import { useEffect, useState } from 'react';
 
-// Firebase App (the core Firebase SDK) is always required and must be listed first
-import firebase from "firebase/app";
-// If you are using v7 or any earlier version of the JS SDK, you should import firebase using namespace import
-// import * as firebase from "firebase/app"
-import 'firebase/analytics'
+import axios from 'axios';
 
-// Add the Firebase products that you want to use
-import "firebase/auth";
+import default_profile_img from './default_profile.png';
 
-import { loginTwitter, logoutTwitter } from './api/TwitterAuth';
-
-
-// 上手く効かなかったのでmaterial-uiとcssで実装
-// const useStyles = makeStyles((theme) => {
-//   createStyles({
-//   })
-// });
-
-// メモ
-// ConsumerKeyはクライアント（コンシューマ）がプロバイダに承認をした際に取得する
-// AccessTokenKeyは任意のユーザがAPIを使用するために使用するキー
-
-// Twitter関連
-// TL取得は自身のAccessTokenKeyで行う
-// TweetはログインユーザのAccessTokenKeyで行う
+// リファクタリング
+// 
 
 function App() {
   // const classes = useStyles();
-  const [recentPosts, setResentPosts] = useState(null);
-  const [postForm, setPostForm] = useState(null);
+  const [recentPosts, setResentPosts] = useState([]);
 
   useEffect(() => {
-    // Firebase認証
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    var firebaseConfig = {
-      apiKey: "AIzaSyAKFz0-PKPcJNVY8N800pvzNrxcnp2X-PY",
-      authDomain: "tiwtter-2b863.firebaseapp.com",
-      projectId: "tiwtter-2b863",
-      storageBucket: "tiwtter-2b863.appspot.com",
-      messagingSenderId: "212533003120",
-      appId: "1:212533003120:web:090141b8c54841db2485b5",
-      measurementId: "G-6K1XBVYVE0"
-    };
-    // Initialize Firebase
-    if (firebase.apps.length === 0) {
-      firebase.initializeApp(firebaseConfig);
-      firebase.analytics();
-    }
-    // Fetch Recent Tweet
-    
-    // Set Tweet Form
-    // ログイン状態の確認処理
-    const unsubscribed = firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        // ログインしている場合
-        setPostForm(
-          <TweetForm
-            userName={user.displayName}
-            userId={user.providerId}
-            imgSrc={user.photoURL}
-          />
-        );
-        console.log(user);
-        console.log("ログイン...");
-      } else {
-        // ログインしてない場合
-        setPostForm(
-          <Box p={2}>
-            <LoginButton
-              loginMsg="ログインして始める"
-            />
-          </Box>
-        );
-        console.log("ログアウト...");
+    // 自前のTwitter Serverから最近の投稿を取得
+    axios.get('http://localhost:5000/search', {
+      params: {
+        q: 'obashun22',
       }
-    });
-    // オブザーバの設定を解除
-    return () => {
-      unsubscribed();
-    };
+    }).then(res => {
+      setResentPosts(res.data.filter(post => {
+        if (!(post.text[0] === 'R' && post.text[1] === 'T')) {
+          return post;
+        }
+      }).slice(0, 3));
+      // console.log(res.data);
+    })
   }, []);
 
   return (
@@ -118,28 +61,25 @@ function App() {
         <Box py={6} style={{backgroundColor: ''}}>
           <h1 className="catch-copy">時代はタイポ</h1>
         </Box>
-        <button onClick={logoutTwitter}>ろぐあうと</button>
 
-        { postForm }
-
-        <RecentTweet
-          userName="おーば"
-          userId="obashun22"
-          imgSrc={logo}
-          content={"はろーはろー"}
+        <TweetForm
+          userName={"Let's Typo"}
+          userId={'typooo'}
+          imgSrc={default_profile_img}
         />
-        <RecentTweet
-          userName="おーば"
-          userId="obashun22"
-          imgSrc={logo}
-          content={"はろーはろー"}
-        />
-        <RecentTweet
-          userName="おーば"
-          userId="obashun22"
-          imgSrc={logo}
-          content={"はろーはろー"}
-        />
+        {
+          recentPosts.map((post, i) => {
+            return (
+            <RecentTweet
+              userName={post.name}
+              userId={post.screen_name}
+              imgSrc={post.profile_image_url_https}
+              text={post.text}
+              key={i}
+            />
+            );
+          })
+        }
       </Container>
       <Box py={4}>
         <Typography>

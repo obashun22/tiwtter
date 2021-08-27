@@ -8,15 +8,15 @@ const RecentTweet = ({
   userName,
   userId,
   imgSrc,
-  content,
+  text,
 }) => {
   return (
     <>
-      <Box>
+      <Box mb={-1}>
         <CardHeader
           avatar={
             <Avatar aria-label="recipe">
-              <img src={imgSrc}/>
+              <img src={imgSrc} width="40"/>
             </Avatar>
           }
           title={userName}
@@ -24,8 +24,8 @@ const RecentTweet = ({
           className="user-info"
         />
         <CardContent>
-          <Typography variant="body2" color="textSecondary" component="p" align="left">
-            {content}
+          <Typography variant="body2" color="inherit" component="p" align="left">
+            {text}
           </Typography>
         </CardContent>
       </Box>
