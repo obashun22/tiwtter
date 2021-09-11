@@ -1,21 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
 
 import Container from '@material-ui/core/Container';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import Avatar from '@material-ui/core/Avatar';
-import CardContent from '@material-ui/core/CardContent';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-import Fab from '@material-ui/core/Fab';
-
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import TweetForm from './components/TweetForm';
 import RecentTweet from './components/RecentTweet';
@@ -25,18 +14,15 @@ import axios from 'axios';
 
 import default_profile_img from './default_profile.png';
 
-// リファクタリング
-// 
 
 function App() {
-  // const classes = useStyles();
   const [recentPosts, setResentPosts] = useState([]);
 
   useEffect(() => {
     // 自前のTwitter Serverから最近の投稿を取得
-    axios.get('http://localhost:5000/search', {
+    axios.get(process.env.REACT_APP_TWITTER_API_HOST + "/search", {
       params: {
-        q: 'obashun22',
+        q: '#Tiwtter',
       }
     }).then(res => {
       setResentPosts(res.data.filter(post => {

@@ -24,7 +24,7 @@ const RecentTweet = ({
           className="user-info"
         />
         <CardContent>
-          <Typography variant="body2" color="inherit" component="p" align="left">
+          <Typography variant="body2" color="inherit" component="p" align="left" style={{whiteSpace: 'pre-line'}}>
             {text}
           </Typography>
         </CardContent>
