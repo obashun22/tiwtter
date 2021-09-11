@@ -148,7 +148,7 @@ const tweet = (text) => {
   const tweetHost = 'https://twitter.com/intent/tweet';
   const url = 'https://tiwtter.netlify.app/';
   const hashtags = [''];
-  const typoText = getTypoFrom(text).replace('\n', '%0a') + "%0a%23Tiwtter から投稿しました%0a";
+  const typoText = getTypoFrom(text).replace('\n', '%0a') + "%0a%23Tiwtter から投稿しました｜タイポしたツイートができるサイト%0a";
   const targetUrl = `${tweetHost}?text=${typoText}&url=${url}&hashtags=${hashtags.join(',')}`;
   window.location = targetUrl;
 };
